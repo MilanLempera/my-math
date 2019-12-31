@@ -49,7 +49,6 @@
          {:visibility "hidden"}))
 
 (defnc grid-item [{:keys [item is-selected is-solved on-click]}]
-  (println on-click)
   (let [styles (cond
                  is-selected selected-grid-item-style
                  is-solved solved-grid-item-style

@@ -6,10 +6,6 @@
 
 (enable-console-print!)
 
-(println "This text is printed from src/my-math/core.cljs. Go ahead and edit it and see reloading in action.")
-
-;; define your app data so that it doesn't get over-written on reload
-
 (def cases (->> generator/case-seq
                 (take 12)
                 (map #(assoc % :id (random-uuid)))
