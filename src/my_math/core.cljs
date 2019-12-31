@@ -1,6 +1,8 @@
 (ns my-math.core
-  (:require [devcards.core :as dc :include-macros true]
-            [hx.react :as hx :refer [defnc]]))
+  (:require [my-math.grid :as grid]
+            [my-math.generator :as generator]
+            [react-dom :as react-dom]
+            [hx.react :as hx]))
 
 (enable-console-print!)
 
@@ -8,13 +10,37 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
+(def cases (->> generator/case-seq
+                (take 12)
+                (map #(assoc % :id (random-uuid)))
+                ))
 
-(defnc title [text]
-       [:h1 text])
+(def results (map #(select-keys %1 [:result :id]) cases))
 
-(dc/defcard {:this "is a map"})
-(dc/defcard (hx/f [title "test-title"]))
+(defonce app-state
+         (atom {
+                :items          (shuffle (concat cases results))
+                :selected-items (set [(second cases)])
+                :solved-items   (set [(first cases) (first results)])
+                }))
+
+(defn select-item [item]
+  (swap! app-state assoc :selected-items #{item}))
+
+(def handlers {:select-item select-item})
+
+(defn render []
+  (react-dom/render
+    ;; hx/f transforms Hiccup into a React element.
+    ;; We only have to use it when we want to use hiccup outside of `defnc` / `defcomponent`
+    (hx/f [grid/grid (merge @app-state
+                            handlers)])
+    (. js/document getElementById "app")))
+
+(add-watch app-state :watcher
+           render)
+
+(render)
 
 (defn on-js-reload []
   ;; optionally touch your app-state to force rerendering depending on
