@@ -11,6 +11,9 @@
                  [devcards "0.2.6"]
                  [org.clojure/core.async  "0.4.500"]
                  [lilactown/hx "0.5.3"]
+                 [cljsjs/react "16.12.0-1"]
+                 [cljsjs/react-dom "16.12.0-1"]
+                 [stylefy "1.14.0"]
                  ]
 
   :plugins [[lein-figwheel "0.5.19"]
