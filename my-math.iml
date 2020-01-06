@@ -60,6 +60,7 @@
     <orderEntry type="library" name="Leiningen: javax.xml.bind/jaxb-api:2.4.0-b180830.0359" level="project" />
     <orderEntry type="library" name="Leiningen: joda-time:2.8.2" level="project" />
     <orderEntry type="library" name="Leiningen: lilactown/hx:0.5.3" level="project" />
+    <orderEntry type="library" name="Leiningen: metosin/tilakone.core:0.0.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Leiningen: net.cgrand/parsley:0.9.3" level="project" />
     <orderEntry type="library" name="Leiningen: net.cgrand/regex:1.1.0" level="project" />
     <orderEntry type="library" name="Leiningen: net.cgrand/sjacket:0.1.1" level="project" />

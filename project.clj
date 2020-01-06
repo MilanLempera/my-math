@@ -14,6 +14,7 @@
                  [cljsjs/react "16.12.0-1"]
                  [cljsjs/react-dom "16.12.0-1"]
                  [stylefy "1.14.0"]
+                 [metosin/tilakone.core "0.0.5-SNAPSHOT"]
                  ]
 
   :plugins [[lein-figwheel "0.5.19"]
