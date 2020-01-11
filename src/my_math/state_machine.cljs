@@ -1,11 +1,12 @@
 (ns my-math.state-machine
   (:require
     [my-math.generator :as generator]
+    [my-math.images :refer [get-random-image]]
     [tilakone.core :as tk :refer [_]]))
 
 (defn init-game-state []
   (let [expressions (->> generator/case-seq
-                         (take 12)
+                         (take 10)
                          (map #(-> %
                                    (assoc :id (random-uuid))
                                    (assoc :type :expression))))
@@ -20,6 +21,7 @@
      :selected-expression nil
      :selected-result     nil
      :solved-items        #{}
+     :background-image    (get-random-image)
      }))
 
 
@@ -140,11 +142,16 @@
   (println :answer-is-right)
   (let [selected-expression (get-in fsm [:quiz-state :selected-expression])
         selected-result (get-in fsm [:quiz-state :selected-result])]
-    (update-in fsm [:quiz-state :solved-items] #(conj % selected-expression selected-result))))
+    (-> fsm
+        (update-in [:quiz-state :solved-items] #(conj % selected-expression selected-result))
+        (assoc-in [:quiz-state :selected-expression] nil)
+        (assoc-in [:quiz-state :selected-result] nil))))
 
 (defmethod process-action :answer-is-bad [fsm]
   (println :answer-is-bad)
-  fsm)
+  (-> fsm
+      (assoc-in [:quiz-state :selected-expression] nil)
+      (assoc-in [:quiz-state :selected-result] nil)))
 
 (defmethod process-action :clear-selected [fsm]
   (update-in fsm [:quiz-state] dissoc :select-expression :select-result))

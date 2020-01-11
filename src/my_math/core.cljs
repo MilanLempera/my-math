@@ -20,8 +20,6 @@
 
 (defn render []
   (let [quiz-state (:quiz-state @app-state)]
-    (println (::tk/state @app-state))
-    (println (dissoc quiz-state :items))
     (react-dom/render
       ;; hx/f transforms Hiccup into a React element.
       ;; We only have to use it when we want to use hiccup outside of `defnc` / `defcomponent`
