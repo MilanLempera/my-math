@@ -3,13 +3,20 @@
             [hx.react :as hx :refer [defnc]]
             [stylefy.core :as stylefy :refer [use-style]]))
 
+
+(def colors {:page-background "#fefdf7"
+             :background      "#fef9e9"
+             :primary         "#191817"
+             :highlight       "#FCEBB6"
+             :highlight-light "#fdf5da"
+             })
+
 (stylefy/init)
 
-(def colors {
-             :background "#FFF9EC"
-             :primary    "#5E412F"
-             :highlight  "#FCEBB6"
-             })
+(def body-style
+  {:background-color (:page-background colors)})
+
+(stylefy/tag "body" body-style)
 
 (defn calculate-columns [item-count]
   (cond
@@ -33,6 +40,8 @@
      :background-repeat     "no-repeat"
      :background-size       "cover"
      :background-image      (str "url('" background-image "')")
+     :box-shadow            "inset 3px 3px 8px -3px rgba(0,0,0,0.75)"
+     :border-radius         "3px"
      }))
 
 (def status-row
@@ -53,16 +62,14 @@
    :user-select      "none"
    :visibility       "visible"
    :opacity          1
-   ::stylefy/mode    {:hover {:background-color (:highlight colors)
-                              :transition       "background-color 0.2s ease-in-out"}}
+   :transition       "background-color 0.3s"
+   ::stylefy/mode    {:hover {:background-color (:highlight-light colors)}}
    })
 
 (def selected-grid-item-style
   (merge grid-item-style
-         {:background-color  (:highlight colors)
-          :transition       "background-color 0.2s ease-in-out"
+         {:background-color (:highlight colors)
           ::stylefy/mode    {:hover {:background-color (:highlight colors)
-                                     :transition       "background-color 0.2s ease-in-out"
                                      }}
           }))
 
