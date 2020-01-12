@@ -2,6 +2,16 @@
 
 FIXME: Write a one-line description of your library/project.
 
+TODO:
+ - count and display right/bad answers
+ - add time tracking
+ - add advanced stats
+ - improve generator
+    - remove duplicity
+    - generate same count of operations
+    - add operations (*, /)
+ - add readme, licence and info about pictures
+
 ## Overview
 
 FIXME: Write a paragraph about the library/project and highlight its goals.
