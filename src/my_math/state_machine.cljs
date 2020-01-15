@@ -22,6 +22,9 @@
      :selected-result     nil
      :solved-items        #{}
      :background-image    (get-random-image)
+     :stats               {:errors      []
+                           :right-count 0
+                           :bad-count   0}
      }))
 
 
@@ -139,21 +142,24 @@
   fsm)
 
 (defmethod process-action :answer-is-right [fsm]
-  (println :answer-is-right)
   (let [selected-expression (get-in fsm [:quiz-state :selected-expression])
         selected-result (get-in fsm [:quiz-state :selected-result])]
     (-> fsm
+        (update-in [:quiz-state :stats :right-count] inc)
         (update-in [:quiz-state :solved-items] #(conj % selected-expression selected-result))
         (assoc-in [:quiz-state :selected-expression] nil)
         (assoc-in [:quiz-state :selected-result] nil))))
 
 (defmethod process-action :answer-is-bad [fsm]
-  (println :answer-is-bad)
-  (-> fsm
-      (assoc-in [:quiz-state :selected-expression] nil)
-      (assoc-in [:quiz-state :selected-result] nil)))
+  (let [error (select-keys (:quiz-state fsm) [:selected-expression :selected-result])]
+    (-> fsm
+        (update-in [:quiz-state :stats :errors] conj error)
+        (update-in [:quiz-state :stats :bad-count] inc)
+        (assoc-in [:quiz-state :selected-expression] nil)
+        (assoc-in [:quiz-state :selected-result] nil))))
 
 (defmethod process-action :clear-selected [fsm]
+  (println (get-in fsm [:quiz-state :stats]))
   (update-in fsm [:quiz-state] dissoc :select-expression :select-result))
 
 (comment

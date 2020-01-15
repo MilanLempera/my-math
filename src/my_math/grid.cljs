@@ -46,6 +46,7 @@
 
 (def status-row
   {
+   :font-size       "1.5em"
    :color           (:primary colors)
    :display         "flex"
    :justify-content "space-between"
@@ -79,6 +80,28 @@
           :opacity    0
           :transition "visibility 0.2s ease-out, opacity 0.2s ease-out"}))
 
+
+(def score-style
+  {:display :flex
+   :width   "150px"})
+
+(def score-badge-style
+  {:display :flex
+   :justify-content :middle
+   :align-items "center"})
+
+(def score-space-style
+  {:flex-grow 1})
+
+(def score-image-style
+  {:height        "20px"
+   :padding-left  "5px"
+   :padding-right "5px"})
+
+(def score-number
+  {:margin-right "5px"
+   :display      :inline-box})
+
 (defn item->string [item]
   (when (nil? item)
     "")
@@ -103,7 +126,20 @@
     :expression (= selected-expression item)
     :result (= selected-result item)))
 
-(defnc grid [{:keys [background-image items solved-items selected-expression selected-result reset select-item]}]
+(defnc score [{:keys [stats]}]
+  (let [{:keys [right-count bad-count]} stats]
+    [:div (use-style score-style)
+     [:div (use-style score-badge-style)
+      [:img (use-style score-image-style {:src "images/right.png" :title "Správně"})]
+      [:span (use-style score-number) right-count]]
+
+     [:span (use-style score-space-style)]
+
+     [:div (use-style score-badge-style)
+      [:img (use-style score-image-style {:src "images/errors.png" :title "Chybně"})]
+      [:span (use-style score-number) bad-count]]]))
+
+(defnc grid [{:keys [background-image items solved-items selected-expression selected-result reset select-item stats]}]
   [:div
    [:div (use-style status-row)
     [:button {:type "button" :on-click reset} "Nová hra"]
@@ -113,11 +149,11 @@
      (item->string selected-result)
      (when (and selected-expression selected-result)
        (if (= (:result selected-expression) (:result selected-result))
-         "RIGHT"
-         "BAD"
+         [:img (use-style score-image-style {:src "images/right.png" :title "Správně"})]
+         [:img (use-style score-image-style {:src "images/errors.png" :title "Chybně"})]
          ))
      ]
-    [:div "dvojice: 10, chyby: 0"]]
+    [score {:stats stats}]]
    [:div (use-style (grid-style background-image (count items)))
     (for [item items]
       [grid-item {:is-selected (is-selected? selected-expression selected-result item)
